@@ -1,0 +1,27 @@
+extends ../layout/layout
+
+
+block title
+    - var titlePage = 'Title Page'
+    title #{titlePage}
+
+block config
+    - var currentPage = 'currentPage'
+    - var bodyClasses = 'bodyClasses'
+    - var pageMainLayout = 'pageMainLayout'
+
+
+block header
+    h3 header
+
+block page
+    div(class="page " + pageMainLayout)
+        ul
+            li #{currentPage}
+            li #{bodyClasses}
+            li #{pageMainLayout}
+block footer
+    h3 footer
+
+block script
+    //script(type="text/javascript" src="js/other.js") . .. ...
