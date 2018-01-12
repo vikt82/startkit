@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var glp = require('gulp-load-plugins')();
+var browserSync = require('browser-sync').create();
 
 // Paths
 var path = {
@@ -11,6 +12,18 @@ var path = {
     watchSass: ['src/sass/**/*.{scss,sass}', 'src/pug/pages/**/*.{scss,sass}', 'src.blocks/**/*.{scss,sass}'],
     staticImg: ['src/static/**/*.{jpg,jpeg,png,gif}']
 }
+
+// START: serve =============
+gulp.task('serve', function() {
+    browserSync.init({
+        server: {
+            baseDir: "dev",
+            notify: true
+        }
+    });
+    browserSync.watch("dev", browserSync.reload);
+});
+// END: serve =============
 
 // START: Pug =============
 gulp.task('pug:dev', function buildHTML() {
@@ -25,7 +38,8 @@ gulp.task('pug:dev', function buildHTML() {
             title: "Pug"
         }))
         .pipe(glp.debug())
-        .pipe(gulp.dest('dev/'));
+        .pipe(gulp.dest('dev/'))
+        .on('end', browserSync.reload);
 });
 
 gulp.task('pug:build', function buildHTML() {
@@ -57,7 +71,10 @@ gulp.task('sass:dev', function () {
         .pipe(glp.csso())
         .pipe(glp.sourcemaps.write())
         .pipe(glp.debug())
-        .pipe(gulp.dest('dev/static/css'));
+        .pipe(gulp.dest('dev/static/css'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 gulp.task('sass:build', function () {
@@ -96,6 +113,7 @@ gulp.task('clean', function() {
 });
 // END: del =============
 
+
 // START: watch =============
 gulp.task('watch', function() {
     gulp.watch(path.watchPug, ['pug:dev']),
@@ -105,7 +123,7 @@ gulp.task('watch', function() {
 // END: watch =============
 
 // START: watch =============
-gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'watch']);
+gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'watch', 'serve']);
 
 gulp.task('build', ['clean', 'pug:build', 'sass:build']);
 // END: watch =============
