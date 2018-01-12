@@ -12,7 +12,9 @@ block config
 
 
 block header
-    h3 header
+    +header({
+        text: 'Diamond Lab'
+    })
 
 block page
     div(class="page " + pageMainLayout)
@@ -21,7 +23,10 @@ block page
             li #{bodyClasses}
             li #{pageMainLayout}
 block footer
-    h3 footer
+    +footer({
+        text: 'diamond lab',
+        src: ''
+    })
 
 block script
     //script(type="text/javascript" src="js/other.js") . .. ...

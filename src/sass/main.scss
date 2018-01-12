@@ -17,26 +17,3 @@
 //- Blocks
 @import '../blocks/header/header';
 @import '../blocks/footer/footer';
-
-
-@mixin clearfix($extend: true) {
-  @if $extend {
-    @extend %clearfix;
-  } @else {
-    &:after {
-      content: '';
-      display: table;
-      clear: both;
-    }
-  }
-}
-
-%clearfix {
-  @include clearfix($extend: false);
-}
-
-body {
-  @extend %clearfix;
-  display: flex;
-  flex-direction: row;
-}
