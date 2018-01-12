@@ -108,7 +108,7 @@ gulp.task('static:dev', function() {
 
 // START: Scripts =============
 gulp.task('scripts:dev', function() {
-    return gulp.src(['./node_modules/jquery/dist/jquery.min.js', './node_modules/slick-carousel/slick/slick.min.js' + path.js])
+    return gulp.src(['./node_modules/jquery/dist/jquery.min.js', './node_modules/slick-carousel/slick/slick.min.js'])
         .pipe(glp.plumber())
         .pipe(glp.debug())
         .pipe(glp.concat('libs.min.js',{newLine: ';'}))
