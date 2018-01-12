@@ -10,7 +10,8 @@ var path = {
     watchPug: ['src/pug/**/*.pug', 'src/blocks/**/*.pug'],
     sass: ['src/sass/main.scss'],
     watchSass: ['src/sass/**/*.{scss,sass}', 'src/pug/pages/**/*.{scss,sass}', 'src.blocks/**/*.{scss,sass}'],
-    staticImg: ['src/static/**/*.{jpg,jpeg,png,gif}']
+    staticImg: ['src/static/**/*.{jpg,jpeg,png,gif}'],
+    js: ['src/js/**/*.js']
 }
 
 // START: serve =============
@@ -105,6 +106,33 @@ gulp.task('static:dev', function() {
 });
 // END: static =============
 
+// START: Scripts =============
+gulp.task('scripts:dev', function() {
+    return gulp.src(['./node_modules/jquery/dist/jquery.min.js', './node_modules/slick-carousel/slick/slick.min.js' + path.js])
+        .pipe(glp.plumber())
+        .pipe(glp.debug())
+        .pipe(glp.concat('libs.min.js',{newLine: ';'}))
+        .on("error", glp.notify.onError({
+            message: "Error: <%= error.message %>",
+            title: "Style"
+        }))
+        .pipe(glp.debug())
+        .pipe(gulp.dest('dev/static/js'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+gulp.task('scripts:dev:mainJs', function() {
+    return gulp.src(path.js)
+        .pipe(glp.plumber())
+        .pipe(glp.debug())
+        .pipe(gulp.dest('dev/static/js'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+// END: Scripts =============
+
 // START: del =============
 var del = require('del');
 
@@ -118,12 +146,13 @@ gulp.task('clean', function() {
 gulp.task('watch', function() {
     gulp.watch(path.watchPug, ['pug:dev']),
     gulp.watch(path.watchSass, ['sass:dev']),
-    gulp.watch(path.staticImg, ['static:dev'])
+    gulp.watch(path.staticImg, ['static:dev']),
+    gulp.watch(path.js, ['static:dev', 'scripts:dev:mainJs'])
 });
 // END: watch =============
 
 // START: watch =============
-gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'watch', 'serve']);
+gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'scripts:dev', 'scripts:dev', 'scripts:dev:mainJs', 'watch', 'serve']);
 
 gulp.task('build', ['clean', 'pug:build', 'sass:build']);
 // END: watch =============

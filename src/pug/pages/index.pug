@@ -1,5 +1,7 @@
 extends ../layout/layout
 
+include ../../blocks/carousel/carousel
+
 
 block title
     - var titlePage = 'Title Page'
@@ -24,6 +26,9 @@ block page
             li #{bodyClasses}
             li #{pageMainLayout}
 
+        hr
+        +carousel()
+        hr
 
 block footer
     +footer({
