@@ -7,8 +7,9 @@ var glp = require('gulp-load-plugins')();
 var path = {
     pug: 'src/pug/pages/*.pug',
     watchPug: ['src/pug/**/*.pug', 'src/blocks/**/*.pug'],
-    sass: 'src/sass/main.scss',
-    watchSass: ['src/sass/**/*.{scss,sass}', 'src/pug/pages/**/*.{scss,sass}', 'src.blocks/**/*.{scss,sass}']
+    sass: ['src/sass/main.scss'],
+    watchSass: ['src/sass/**/*.{scss,sass}', 'src/pug/pages/**/*.{scss,sass}', 'src.blocks/**/*.{scss,sass}'],
+    staticImg: ['src/static/**/*.{jpg,jpeg,png,gif}']
 }
 
 // START: Pug =============
@@ -78,6 +79,15 @@ gulp.task('sass:build', function () {
 });
 // END: sass =============
 
+// START: static =============
+gulp.task('static:dev', function() {
+    return gulp.src(path.staticImg)
+        .pipe(glp.debug())
+        .pipe(glp.plumber())
+        .pipe(gulp.dest('dev/static/img'));
+});
+// END: static =============
+
 // START: del =============
 var del = require('del');
 
@@ -89,12 +99,13 @@ gulp.task('clean', function() {
 // START: watch =============
 gulp.task('watch', function() {
     gulp.watch(path.watchPug, ['pug:dev']),
-    gulp.watch(path.watchSass, ['sass:dev'])
+    gulp.watch(path.watchSass, ['sass:dev']),
+    gulp.watch(path.staticImg, ['static:dev'])
 });
 // END: watch =============
 
 // START: watch =============
-gulp.task('dev', ['pug:dev','sass:dev', 'watch']);
+gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'watch']);
 
 gulp.task('build', ['clean', 'pug:build', 'sass:build']);
 // END: watch =============
