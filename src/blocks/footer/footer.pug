@@ -1,2 +1,5 @@
 mixin footer(data)
-    h3 Footer #{data.text}
+    +b.FOOTER.footer
+        +e.H3.inner.animated.zoomIn
+            +icon('logo')
+            | #{data.text}

@@ -9,7 +9,7 @@ var path = {
     pug: 'src/pug/pages/*.pug',
     watchPug: ['src/pug/**/*.pug', 'src/blocks/**/*.pug'],
     sass: ['src/sass/main.scss'],
-    watchSass: ['src/sass/**/*.{scss,sass}', 'src/pug/pages/**/*.{scss,sass}', 'src.blocks/**/*.{scss,sass}'],
+    watchSass: ['src/sass/**/*.{scss,sass}', 'src/pug/pages/**/*.{scss,sass}', 'src/blocks/**/*.{scss,sass}'],
     staticImg: ['src/static/img/*.*'],
     js: ['src/js/**/*.js'],
     svgIcon: ['src/static/icon/**/*.svg'],

@@ -1,0 +1,25 @@
+.header
+  padding: rem(20) 0
+  text-align: center
+
+  &__title
+    position: relative
+    font-size: rem(30)
+    
+    &::before
+      content: attr(data-attr)
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      font-size: rem(60)
+      z-index: -1
+      color: #eee
+      letter-spacing: .1em
+
+.logo
+  width: rem(100)
+  height: rem(100)
+  display: block
+  margin: 0 auto
+
