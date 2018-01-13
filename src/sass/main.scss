@@ -5,6 +5,9 @@
 @import 'helpers/mixin';
 @import 'helpers/base';
 
+//Icon
+@import 'icon/icon';
+
 
 //- Library style
 @import 'libs/libs';
@@ -17,3 +20,10 @@
 //- Blocks
 @import '../blocks/header/header';
 @import '../blocks/footer/footer';
+
+.whatsapp {
+  width: 10px;
+  height: 10px;
+  display: block;
+  border: 1px solid #000;
+}
