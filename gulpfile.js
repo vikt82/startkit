@@ -12,7 +12,8 @@ var path = {
     watchSass: ['src/sass/**/*.{scss,sass}', 'src/pug/pages/**/*.{scss,sass}', 'src.blocks/**/*.{scss,sass}'],
     staticImg: ['src/static/img/*.*'],
     js: ['src/js/**/*.js'],
-    svgIcon: ['src/static/icon/**/*.svg']
+    svgIcon: ['src/static/icon/**/*.svg'],
+    svg: ['src/static/svg/**/*.svg']
 }
 
 // START: serve =============
@@ -203,7 +204,10 @@ gulp.task('svg:icon:dev', function() {
                 }
             }
         }))
-        .pipe(gulp.dest('dev/static/icon/'));
+        .pipe(gulp.dest('dev/static/icon/'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
 });
 
 gulp.task('svg:icon:build', function() {
@@ -241,6 +245,77 @@ gulp.task('svg:icon:build', function() {
 });
 // END: svg icon =============
 
+// START: svg =============
+gulp.task('svg:svg:dev', function() {
+    return gulp.src(path.svg)
+        .pipe(glp.plumber())
+        // minify svg
+        .pipe(glp.svgmin({
+            js2svg: {
+                pretty: true
+            }
+        }))
+        // remove all fill, style and stroke declarations in out shapes
+        .pipe(glp.cheerio({
+            run: function ($) {
+                $('[stroke]').removeAttr('stroke');
+                $('[style]').removeAttr('style');
+            },
+            parserOptions: {xmlMode: true}
+        }))
+        // cheerio plugin create unnecessary string '&gt;', so replace it.
+        .pipe(glp.replace('&gt;', '>'))
+        // build svg sprite
+        .pipe(glp.svgSprite({
+            mode: {
+                symbol: {
+                    sprite: "../color.svg",
+                    render: {
+                        template: 'src/sass/icon/color.scss'
+                    }
+                }
+            }
+        }))
+        .pipe(gulp.dest('dev/static/svg/'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
+gulp.task('svg:icon:build', function() {
+    return gulp.src(path.svg)
+        .pipe(glp.plumber())
+        // minify svg
+        .pipe(glp.svgmin({
+            js2svg: {
+                pretty: true
+            }
+        }))
+        // remove all fill, style and stroke declarations in out shapes
+        .pipe(glp.cheerio({
+            run: function ($) {
+                $('[stroke]').removeAttr('stroke');
+                $('[style]').removeAttr('style');
+            },
+            parserOptions: {xmlMode: true}
+        }))
+        // cheerio plugin create unnecessary string '&gt;', so replace it.
+        .pipe(glp.replace('&gt;', '>'))
+        // build svg sprite
+        .pipe(glp.svgSprite({
+            mode: {
+                symbol: {
+                    sprite: "../color.svg",
+                    render: {
+                        template: 'src/sass/svg/color.scss'
+                    }
+                }
+            }
+        }))
+        .pipe(gulp.dest('app/static/svg/'));
+});
+// END: svg =============
+
 // START: del =============
 var del = require('del');
 gulp.task('clean', function() {
@@ -255,12 +330,13 @@ gulp.task('watch', function() {
     gulp.watch(path.watchSass, ['sass:dev']),
     gulp.watch(path.staticImg, ['static:dev']),
     gulp.watch(path.js, ['static:dev', 'scripts:dev:mainJs']),
-    gulp.watch(path.svg, ['svg:icon:dev'])
+    gulp.watch(path.svg, ['svg:icon:dev']),
+    gulp.watch(path.svg, ['svg:svg:dev'])
 });
 // END: watch =============
 
 // START: =============
-gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'scripts:dev', 'scripts:dev', 'scripts:dev:mainJs', 'svg:icon:dev', 'watch', 'serve']);
+gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'scripts:dev', 'scripts:dev', 'scripts:dev:mainJs', 'svg:icon:dev', 'svg:svg:dev', 'watch', 'serve']);
 
 gulp.task('build', ['pug:build', 'sass:build', 'scripts:build', 'scripts:build:mainJs', 'image:build', 'svg:icon:build']);
 // END: =============
