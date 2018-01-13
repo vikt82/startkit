@@ -21,9 +21,10 @@
 @import '../blocks/header/header';
 @import '../blocks/footer/footer';
 
-.whatsapp {
-  width: 10px;
-  height: 10px;
-  display: block;
-  border: 1px solid #000;
+.twitter-logo-silhouette {
+  width: 100px;
+  height: 100px;
+  use {
+    fill: red;
+  }
 }

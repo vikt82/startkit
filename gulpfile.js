@@ -109,7 +109,8 @@ gulp.task('static:dev', function() {
 
 // START: Scripts =============
 gulp.task('scripts:dev', function() {
-    return gulp.src(['./node_modules/jquery/dist/jquery.min.js', './node_modules/slick-carousel/slick/slick.min.js'])
+    // './node_modules/svg4everybody/dist/svg4everybody.js' './node_modules/svgxuse/svgxuse.min.js'
+    return gulp.src(['./node_modules/svg4everybody/dist/svg4everybody.js','./node_modules/jquery/dist/jquery.min.js', './node_modules/slick-carousel/slick/slick.min.js'])
         .pipe(glp.plumber())
         .pipe(glp.debug())
         .pipe(glp.concat('libs.min.js',{newLine: ';'}))
@@ -174,11 +175,13 @@ gulp.task('image:build', function() {
 gulp.task('svg:icon:dev', function() {
     return gulp.src(path.svgIcon)
         .pipe(glp.plumber())
+        // minify svg
         .pipe(glp.svgmin({
             js2svg: {
                 pretty: true
             }
         }))
+        // remove all fill, style and stroke declarations in out shapes
         .pipe(glp.cheerio({
             run: function ($) {
                 $('[fill]').removeAttr('fill');
@@ -187,21 +190,54 @@ gulp.task('svg:icon:dev', function() {
             },
             parserOptions: {xmlMode: true}
         }))
+        // cheerio plugin create unnecessary string '&gt;', so replace it.
         .pipe(glp.replace('&gt;', '>'))
+        // build svg sprite
         .pipe(glp.svgSprite({
             mode: {
                 symbol: {
-                    sprite: "sprite.svg",
+                    sprite: "../icon.svg",
                     render: {
-                        scss: {
-                            dest:'src/sass/_sprite.scss',
-                            template: 'src/sass/helpers/icon.scss'
-                        }
+                        template: 'src/sass/icon/icon.scss'
                     }
                 }
             }
         }))
         .pipe(gulp.dest('dev/static/icon/'));
+});
+
+gulp.task('svg:icon:build', function() {
+    return gulp.src(path.svgIcon)
+        .pipe(glp.plumber())
+        // minify svg
+        .pipe(glp.svgmin({
+            js2svg: {
+                pretty: true
+            }
+        }))
+        // remove all fill, style and stroke declarations in out shapes
+        .pipe(glp.cheerio({
+            run: function ($) {
+                $('[fill]').removeAttr('fill');
+                $('[stroke]').removeAttr('stroke');
+                $('[style]').removeAttr('style');
+            },
+            parserOptions: {xmlMode: true}
+        }))
+        // cheerio plugin create unnecessary string '&gt;', so replace it.
+        .pipe(glp.replace('&gt;', '>'))
+        // build svg sprite
+        .pipe(glp.svgSprite({
+            mode: {
+                symbol: {
+                    sprite: "../icon.svg",
+                    render: {
+                        template: 'src/sass/icon/icon.scss'
+                    }
+                }
+            }
+        }))
+        .pipe(gulp.dest('app/static/icon/'));
 });
 // END: svg icon =============
 
@@ -226,7 +262,7 @@ gulp.task('watch', function() {
 // START: =============
 gulp.task('dev', ['pug:dev','sass:dev', 'static:dev', 'scripts:dev', 'scripts:dev', 'scripts:dev:mainJs', 'svg:icon:dev', 'watch', 'serve']);
 
-gulp.task('build', ['pug:build', 'sass:build', 'scripts:build', 'scripts:build:mainJs', 'image:build']);
+gulp.task('build', ['pug:build', 'sass:build', 'scripts:build', 'scripts:build:mainJs', 'image:build', 'svg:icon:build']);
 // END: =============
 
 
