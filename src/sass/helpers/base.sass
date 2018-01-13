@@ -11,6 +11,7 @@ html,body
   font-smoothing: antialiased
   -webkit-font-smoothing: antialiased
   text-shadow: rgba(0, 0, 0, .01) 0 0 1px
+  height: 100%
 
 body
   font-family: 'Roboto', sans-serif
@@ -18,3 +19,26 @@ body
   font-weight: 400
   font-style: normal
   line-height: 1.6
+
+.page
+  min-height: calc(100vh - 322px)
+
+.container
+  @include container(1600)
+
+.animate-list
+  @include container(1600)
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  align-items: center
+  list-style: none
+  padding: 0
+
+  li
+    padding: 0 20px
+    border: 1px solid #212121
+    margin-bottom: 10px
+    margin-right: 10px
+    &:last-child
+      margin-right: 0

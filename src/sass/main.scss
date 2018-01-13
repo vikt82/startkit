@@ -1,6 +1,7 @@
 //- Helpers
 @import 'helpers/variable';
-@import 'helpers/reset';
+//@import 'helpers/reset';
+@import 'helpers/normalize';
 @import 'helpers/fonts';
 @import 'helpers/mixin';
 @import 'helpers/base';
@@ -20,3 +21,5 @@
 //- Blocks
 @import '../blocks/header/header';
 @import '../blocks/footer/footer';
+
+@import '../blocks/carousel/carousel';

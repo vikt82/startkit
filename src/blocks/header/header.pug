@@ -1,4 +1,7 @@
 mixin header(data)
     +b.HEADER.header
         +svg('logo', 'animated zoomIn')
-        +e.H1.title.animated.zoomIn(data-attr= data.attr) #{data.text}
+        +e.H1.title.animated.zoomIn(data-attr= data.attr)
+            +icon('logo')
+            | #{data.text}
+            +icon('logo')

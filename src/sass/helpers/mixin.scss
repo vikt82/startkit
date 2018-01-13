@@ -10,3 +10,15 @@
 
   @return $pixels / $context * 1rem;
 }
+
+//- Container
+@mixin container($containerWidth: null) {
+  width: $containerWidth + px;
+  padding: 0 10px;
+  margin: 0 auto;
+  @extend %box-sizing
+}
+
+%box-sizing {
+  box-sizing: border-box;
+}
